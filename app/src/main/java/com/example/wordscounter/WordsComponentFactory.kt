@@ -4,13 +4,13 @@ import android.content.Intent
 import androidx.core.app.AppComponentFactory
 import com.example.wordscounter.di.scope.RootScope
 
-class WordsCounterComponentFactory : AppComponentFactory() {
+class WordsComponentFactory : AppComponentFactory() {
     override fun instantiateActivityCompat(
         cl: ClassLoader,
         className: String,
         intent: Intent?
-    ): WordsCounterActivity = with(RootScope.scopes.activity) {
+    ): WordsActivity = with(RootScope.scopes.activity) {
         create()
-        get().module.wordsCounterActivity
+        get().module.wordsActivity
     }
 }

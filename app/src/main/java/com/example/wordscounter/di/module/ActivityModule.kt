@@ -1,13 +1,13 @@
 package com.example.wordscounter.di.module
 
-import com.example.wordscounter.WordsCounterActivity
-import com.example.wordscounter.WordsCounterViewModel
+import com.example.wordscounter.WordsActivity
+import com.example.wordscounter.WordsViewModel
 import com.example.wordscounter.di.Module
 
 class ActivityModule(
 ) : Module {
-    private val wordsCounterViewModel = WordsCounterViewModel()
+    private val wordsViewModel = WordsViewModel()
 
-    val wordsCounterActivity: WordsCounterActivity
-        get() = WordsCounterActivity(wordsCounterViewModel)
+    val wordsActivity: WordsActivity
+        get() = WordsActivity(wordsViewModel)
 }

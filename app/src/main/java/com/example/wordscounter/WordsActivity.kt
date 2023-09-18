@@ -1,22 +1,34 @@
 package com.example.wordscounter
 
 import android.content.res.AssetManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.SystemClock
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import com.example.wordscounter.databinding.ActivityWordsBinding
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
 import java.nio.charset.Charset
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
-class WordsCounterActivity(
-    private val viewModel: WordsCounterViewModel,
-) : AppCompatActivity() {
+class WordsActivity(
+    private val viewModel: WordsViewModel,
+) : AppCompatActivity(R.layout.activity_words) {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_words_counter)
-        readAndProcessTextFile("Romeo-and-Juliet.txt")
+
+        val viewBinding = ActivityWordsBinding.bind(window.peekDecorView())
+        val wordsAdapter = WordsAdapter()
+
+        viewBinding.words.adapter = wordsAdapter
+
+        lifecycleScope.launch {
+            viewModel.words.collectLatest(wordsAdapter::submitList)
+        }
     }
 
     private fun readAndProcessTextFile(fileName: String): HashMap<String, Int> {

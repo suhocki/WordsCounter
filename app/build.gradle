@@ -35,6 +35,9 @@ android {
             includeAndroidResources = true
         }
     }
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {
@@ -44,8 +47,8 @@ dependencies {
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation "io.mockk:mockk:1.13.5"
-    testImplementation "androidx.test.ext:junit-ktx:1.1.5"
     testImplementation "org.robolectric:robolectric:4.10.3"
-
-    testImplementation('com.github.sergio-sastre.AndroidUiTestingUtils:utils:2.0.0')
+    testImplementation "androidx.test.ext:junit-ktx:1.1.5"
+    testImplementation "androidx.test.espresso:espresso-core:3.5.1"
+    testImplementation "androidx.test.espresso:espresso-contrib:3.5.1"
 }
