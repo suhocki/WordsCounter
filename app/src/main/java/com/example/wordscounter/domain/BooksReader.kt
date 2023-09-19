@@ -31,7 +31,7 @@ class BooksReader(
     }
 
     companion object {
-        private val KNOWN_CHARS = "^[0-9[:punct:]\\s\\p{L}]+\$".toRegex()
+        private val KNOWN_CHARS = "^[0-9A-z[:punct:]’\\s]+\$".toRegex()
         private val EXTRACT_WORDS = "[\\p{L}’-]+".toRegex()
     }
 }
