@@ -2,6 +2,7 @@ package com.example.wordscounter.di.module
 
 import android.content.Context
 import android.content.res.AssetManager
+import android.content.res.Resources
 import com.example.wordscounter.data.AssetsRepository
 import com.example.wordscounter.di.Module
 import com.example.wordscounter.domain.BooksReader
@@ -15,8 +16,11 @@ import java.nio.charset.Charset
 class ActivityModule(
     private val context: Context,
 ) : Module {
+    private val resources: Resources
+        get() = context.resources
+
     private val assetManager: AssetManager
-        get() = context.assets
+        get() = resources.assets
 
     private val filesRepository: FilesRepository
         get() = AssetsRepository(assetManager, context)
@@ -36,6 +40,7 @@ class ActivityModule(
 
     private val wordsFrequencyViewModel = WordsFrequencyViewModel(
         booksReader = booksReader,
+        resources = resources,
     )
 
     val wordsFrequencyActivity: WordsFrequencyActivity

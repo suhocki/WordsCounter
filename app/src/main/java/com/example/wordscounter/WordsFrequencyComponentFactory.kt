@@ -11,7 +11,9 @@ class WordsFrequencyComponentFactory : AppComponentFactory() {
         className: String,
         intent: Intent?
     ): WordsFrequencyActivity = with(RootScope.scopes.activity) {
-        create()
+        if (!isOpen()) {
+            create()
+        }
         get().module.wordsFrequencyActivity
     }
 }

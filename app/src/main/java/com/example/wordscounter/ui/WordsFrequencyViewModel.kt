@@ -1,5 +1,6 @@
 package com.example.wordscounter.ui
 
+import android.content.res.Resources
 import com.example.wordscounter.domain.Book
 import com.example.wordscounter.domain.BooksReader
 import com.example.wordscounter.domain.Sort
@@ -13,6 +14,7 @@ import kotlinx.coroutines.launch
 
 class WordsFrequencyViewModel(
     private val booksReader: BooksReader,
+    private val resources: Resources,
 ) {
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
@@ -23,6 +25,7 @@ class WordsFrequencyViewModel(
     private val sortTypeQueue = ArrayDeque(Sort.values().toList())
 
     private val isProgress = MutableStateFlow(false)
+    private val infoMessage = MutableSharedFlow<String>()
 
     init {
         changeSort()
@@ -35,11 +38,13 @@ class WordsFrequencyViewModel(
 
             with(sortTypeQueue) { addLast(removeFirst()) }
 
+            val newSortType = sortTypeQueue.first()
             val frequency = booksReader.getWordsFrequency(book)
-                .sortedWith(sortTypeQueue.first().comparator)
+                .sortedWith(newSortType.comparator)
 
             wordsFrequency.emit(frequency)
-            sortType.emit(sortTypeQueue.first())
+            sortType.emit(newSortType)
+            infoMessage.emit(resources.getString(newSortType.titleRes))
         }
     }
 
@@ -48,7 +53,10 @@ class WordsFrequencyViewModel(
     fun getSortType(): Flow<Sort?> = sortType
 
     fun isProgress(): Flow<Boolean> = isProgress
+
     fun onListAnimationCompleted() {
         isProgress.tryEmit(false)
     }
+
+    fun getInfoMessage(): Flow<String> = infoMessage
 }

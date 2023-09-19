@@ -14,13 +14,12 @@ import com.example.wordscounter.databinding.ActivityWordsFrequencyBinding
 class WordsFrequencyActivity(
     private val viewModel: WordsFrequencyViewModel,
 ) : AppCompatActivity() {
-    private var optionsMenu: Menu? = null
-    private var toast: Toast? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val viewBinding = ActivityWordsFrequencyBinding.inflate(layoutInflater)
         val wordsFrequencyAdapter = WordsFrequencyAdapter()
+        var toast: Toast? = null
 
         setContentView(viewBinding.root)
         setSupportActionBar(viewBinding.toolbar)
@@ -31,32 +30,28 @@ class WordsFrequencyActivity(
             wordsFrequencyAdapter.submitList(wordsFrequency, viewModel::onListAnimationCompleted)
         }
 
-        viewModel.getSortType().observeFlow(this) { sortType ->
-            optionsMenu?.forEach { menuItem ->
-                menuItem.isVisible = menuItem.itemId == sortType?.menuId
-                if (menuItem.isVisible) {
-                    menuItem.title?.toString()?.let(::showToast)
-                }
-            }
-        }
-
         viewModel.isProgress().observeFlow(this) { isProgress ->
             viewBinding.progress.isVisible = isProgress
             if (!isProgress) {
                 viewBinding.wordsFrequency.scrollToPosition(0)
             }
         }
+
+        viewModel.getInfoMessage().observeFlow(this) { message ->
+            toast?.cancel()
+            toast = Toast
+                .makeText(this, message, Toast.LENGTH_SHORT)
+                .apply { show() }
+        }
     }
 
-    private fun showToast(message: String) {
-        toast?.cancel()
-        toast = Toast
-            .makeText(this, message, Toast.LENGTH_SHORT)
-            .apply { show() }
-    }
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        viewModel.getSortType().observeFlow(this) { sortType ->
+            menu.forEach { menuItem ->
+                menuItem.isVisible = menuItem.itemId == sortType?.menuId
+            }
+        }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        optionsMenu = menu
         menuInflater.inflate(R.menu.menu_words_frequency, menu)
         return true
     }
