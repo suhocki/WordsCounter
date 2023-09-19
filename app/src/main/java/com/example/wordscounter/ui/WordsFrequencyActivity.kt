@@ -46,13 +46,14 @@ class WordsFrequencyActivity(
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_words_frequency, menu)
+
         viewModel.getSortType().observeFlow(this) { sortType ->
             menu.forEach { menuItem ->
                 menuItem.isVisible = menuItem.itemId == sortType?.menuId
             }
         }
 
-        menuInflater.inflate(R.menu.menu_words_frequency, menu)
         return true
     }
 
