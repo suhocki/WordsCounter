@@ -7,6 +7,10 @@ import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.contrib.RecyclerViewActions.*
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.example.wordscounter.domain.WordFrequency
+import com.example.wordscounter.ui.WordsFrequencyActivity
+import com.example.wordscounter.ui.WordsFrequencyAdapter
+import com.example.wordscounter.ui.WordsFrequencyViewModel
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
@@ -20,19 +24,19 @@ import org.junit.runner.RunWith
 import org.robolectric.util.ReflectionHelpers
 
 @RunWith(AndroidJUnit4::class)
-class WordsActivityTest {
+class WordsFrequencyActivityTest {
 
-    private val viewModel: WordsViewModel = mockk()
+    private val viewModel: WordsFrequencyViewModel = mockk(relaxed = true)
 
-    private val words = (0 until 50).map { i -> Word("word #$i", i) }
-    private val activity = WordsActivity(viewModel)
+    private val words = (0 until 50).map { i -> WordFrequency("word #$i", i) }
+    private val activity = WordsFrequencyActivity(viewModel)
 
     @Before
     fun setUp() {
         mockkStatic(ReflectionHelpers::class)
 
-        every { ReflectionHelpers.callConstructor(WordsActivity::class.java) } returns activity
-        every { viewModel.words } returns MutableStateFlow(words)
+        every { ReflectionHelpers.callConstructor(WordsFrequencyActivity::class.java) } returns activity
+        every { viewModel.getWordsFrequency() } returns MutableStateFlow(words)
     }
 
     @After
@@ -43,7 +47,7 @@ class WordsActivityTest {
     @Test
     fun `check if words are binding correctly`() = launchActivity {
         words.forEach { word ->
-            val checkItem = actionOnItem<WordsAdapter.ViewHolder>(
+            val checkItem = actionOnItem<WordsFrequencyAdapter.ViewHolder>(
                 allOf(
                     hasDescendant(withText(word.word)),
                     hasDescendant(withText(word.count.toString()))
@@ -51,14 +55,13 @@ class WordsActivityTest {
                 scrollTo()
             )
 
-            onView(withId(R.id.words)).perform(checkItem)
+            onView(withId(R.id.words_frequency)).perform(checkItem)
         }
     }
 
-    private fun launchActivity(action: () -> Unit) = ActivityScenario
-        .launchActivityForResult(WordsActivity::class.java)
+    private fun launchActivity(block: () -> Unit) = ActivityScenario
+        .launchActivityForResult(WordsFrequencyActivity::class.java)
         .moveToState(Lifecycle.State.RESUMED)
-        .onActivity {
-            action()
-        }.close()
+        .onActivity { block() }
+        .close()
 }

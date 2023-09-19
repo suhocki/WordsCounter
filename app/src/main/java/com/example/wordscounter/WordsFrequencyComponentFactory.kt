@@ -3,14 +3,15 @@ package com.example.wordscounter
 import android.content.Intent
 import androidx.core.app.AppComponentFactory
 import com.example.wordscounter.di.scope.RootScope
+import com.example.wordscounter.ui.WordsFrequencyActivity
 
-class WordsComponentFactory : AppComponentFactory() {
+class WordsFrequencyComponentFactory : AppComponentFactory() {
     override fun instantiateActivityCompat(
         cl: ClassLoader,
         className: String,
         intent: Intent?
-    ): WordsActivity = with(RootScope.scopes.activity) {
+    ): WordsFrequencyActivity = with(RootScope.scopes.activity) {
         create()
-        get().module.wordsActivity
+        get().module.wordsFrequencyActivity
     }
 }

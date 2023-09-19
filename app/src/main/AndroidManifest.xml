@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
-        android:name=".App"
+        android:name=".WordsFrequencyApp"
         android:allowBackup="true"
-        android:appComponentFactory="com.example.wordscounter.WordsComponentFactory"
+        android:appComponentFactory="com.example.wordscounter.WordsFrequencyComponentFactory"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
@@ -16,7 +16,7 @@
         tools:replace="android:appComponentFactory"
         tools:targetApi="34">
         <activity
-            android:name=".WordsActivity"
+            android:name=".ui.WordsFrequencyActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

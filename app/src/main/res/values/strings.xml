@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">WordsCounter</string>
+    <string name="app_name">Words Counter</string>
+
+    <string name="sorted_alphabetically">Sorted alphabetically</string>
+    <string name="sorted_by_char_length">Sorted by char length</string>
+    <string name="sorted_by_frequency">Sorted by frequency</string>
 </resources>
