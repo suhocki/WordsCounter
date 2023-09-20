@@ -1,5 +1,6 @@
 package com.example.wordscounter.ui
 
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -12,7 +13,7 @@ fun <T> Flow<T>.observeFlow(
     observer: (T) -> Unit,
 ) {
     lifecycleOwner.lifecycleScope.launch {
-        flowWithLifecycle(lifecycleOwner.lifecycle)
+        flowWithLifecycle(lifecycleOwner.lifecycle, Lifecycle.State.CREATED)
             .collectLatest(observer::invoke)
     }
 }
