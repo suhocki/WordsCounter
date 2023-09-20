@@ -1,5 +1,7 @@
 package com.example.wordscounter.domain
 
+import com.example.wordscounter.domain.model.Book
+import com.example.wordscounter.domain.model.WordFrequency
 import java.io.InputStreamReader
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

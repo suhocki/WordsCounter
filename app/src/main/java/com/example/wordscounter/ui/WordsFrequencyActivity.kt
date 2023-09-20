@@ -9,6 +9,8 @@ import androidx.core.view.forEach
 import androidx.core.view.isVisible
 import com.example.wordscounter.R
 import com.example.wordscounter.databinding.ActivityWordsFrequencyBinding
+import com.example.wordscounter.ui.extension.menuId
+import com.example.wordscounter.ui.extension.observeFlow
 
 
 class WordsFrequencyActivity(

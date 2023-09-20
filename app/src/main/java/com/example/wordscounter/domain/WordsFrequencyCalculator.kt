@@ -1,5 +1,7 @@
 package com.example.wordscounter.domain
 
+import com.example.wordscounter.domain.model.WordFrequency
+
 class WordsFrequencyCalculator {
     private val wordFrequencyMap = HashMap<String, Int>()
 

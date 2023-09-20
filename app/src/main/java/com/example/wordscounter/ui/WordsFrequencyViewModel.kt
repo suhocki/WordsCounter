@@ -3,11 +3,12 @@ package com.example.wordscounter.ui
 import android.content.res.Resources
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.wordscounter.domain.Book
 import com.example.wordscounter.domain.BooksReader
 import com.example.wordscounter.domain.CoroutineDispatchers
-import com.example.wordscounter.domain.Sort
-import com.example.wordscounter.domain.WordFrequency
+import com.example.wordscounter.domain.model.Book
+import com.example.wordscounter.domain.model.Sort
+import com.example.wordscounter.domain.model.WordFrequency
+import com.example.wordscounter.ui.extension.titleRes
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow

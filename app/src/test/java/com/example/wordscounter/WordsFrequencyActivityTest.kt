@@ -8,8 +8,8 @@ import androidx.test.espresso.assertion.ViewAssertions.*
 import androidx.test.espresso.contrib.RecyclerViewActions.*
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.example.wordscounter.domain.Sort
-import com.example.wordscounter.domain.WordFrequency
+import com.example.wordscounter.domain.model.Sort
+import com.example.wordscounter.domain.model.WordFrequency
 import com.example.wordscounter.ui.WordsFrequencyActivity
 import com.example.wordscounter.ui.WordsFrequencyAdapter
 import com.example.wordscounter.ui.WordsFrequencyViewModel

@@ -1,4 +1,4 @@
-package com.example.wordscounter.domain
+package com.example.wordscounter.domain.model
 
 enum class Sort(val comparator: Comparator<WordFrequency>) {
     ALPHABETICALLY(Comparator { o1, o2 ->

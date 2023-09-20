@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wordscounter.databinding.ItemWordFrequencyBinding
-import com.example.wordscounter.domain.WordFrequency
+import com.example.wordscounter.domain.model.WordFrequency
 
 class WordsFrequencyAdapter :
     ListAdapter<WordFrequency, WordsFrequencyAdapter.ViewHolder>(DiffCallback()) {

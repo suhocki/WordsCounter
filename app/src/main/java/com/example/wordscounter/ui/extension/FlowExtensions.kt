@@ -1,4 +1,4 @@
-package com.example.wordscounter.ui
+package com.example.wordscounter.ui.extension
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner

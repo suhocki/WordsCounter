@@ -1,9 +1,9 @@
-package com.example.wordscounter.ui
+package com.example.wordscounter.ui.extension
 
 import androidx.annotation.IdRes
 import androidx.annotation.StringRes
 import com.example.wordscounter.R
-import com.example.wordscounter.domain.Sort
+import com.example.wordscounter.domain.model.Sort
 
 @get:IdRes
 val Sort.menuId: Int

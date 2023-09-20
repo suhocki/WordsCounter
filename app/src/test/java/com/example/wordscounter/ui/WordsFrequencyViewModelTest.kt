@@ -3,10 +3,10 @@ package com.example.wordscounter.ui
 import android.content.res.Resources
 import com.example.wordscounter.R
 import com.example.wordscounter.TestCoroutineRule
-import com.example.wordscounter.domain.Book
 import com.example.wordscounter.domain.BooksReader
-import com.example.wordscounter.domain.Sort
-import com.example.wordscounter.domain.WordFrequency
+import com.example.wordscounter.domain.model.Book
+import com.example.wordscounter.domain.model.Sort
+import com.example.wordscounter.domain.model.WordFrequency
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
