@@ -1,10 +1,10 @@
 package com.example.wordscounter.domain
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.InputStreamReader
 import java.nio.charset.Charset
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import kotlin.streams.asSequence
 
 class CharsetDetector(
@@ -15,7 +15,7 @@ class CharsetDetector(
     suspend fun detectFileCharset(
         file: File,
         acceptableChars: Regex,
-    ): Charset = withContext(Dispatchers.IO) {
+    ): Charset = withContext(Dispatchers.Default) {
         availableCharsets.values
             .associateWith { charset -> validLinesCount(file, charset, acceptableChars) }
             .maxBy { (_, validLines) -> validLines }

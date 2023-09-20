@@ -8,6 +8,7 @@ import com.example.wordscounter.domain.BooksReader
 import com.example.wordscounter.domain.Sort
 import com.example.wordscounter.domain.WordFrequency
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,31 +18,39 @@ class WordsFrequencyViewModel(
     private val booksReader: BooksReader,
     private val resources: Resources,
 ) : ViewModel() {
-    private val sortTypeQueue = ArrayDeque(Sort.values().toList())
-
-    private val sortType = MutableStateFlow<Sort?>(null)
+    private val sortType = MutableStateFlow(Sort.FREQUENCY)
     private val isProgress = MutableStateFlow(false)
-    private val infoMessage = MutableSharedFlow<String>()
+    private val infoMessage = MutableSharedFlow<String>(1)
     private val wordsFrequency = MutableSharedFlow<List<WordFrequency>>(1, 1)
 
+    private var sortJob: Job? = null
+
     init {
-        changeSort()
+        sortBy(Sort.FREQUENCY)
     }
 
-    fun changeSort() {
-        viewModelScope.launch(Dispatchers.Default) {
+    fun changeSort() = with(Sort.values()) {
+        indexOf(sortType.value)
+            .inc()
+            .rem(size)
+            .let(::get)
+            .also(sortType::tryEmit)
+            .let(::sortBy)
+    }
+
+    private fun sortBy(
+        newSortType: Sort
+    ) {
+        sortJob?.cancel()
+        sortJob = viewModelScope.launch(Dispatchers.Default) {
             isProgress.emit(true)
-            sortType.emit(null)
 
-            with(sortTypeQueue) { addLast(removeFirst()) }
-
-            val newSortType = sortTypeQueue.first()
-            val frequency = booksReader.getWordsFrequency(Book.ROMEO_AND_JULIET)
+            booksReader
+                .getWordsFrequency(Book.ROMEO_AND_JULIET)
                 .sortedWith(newSortType.comparator)
+                .let(wordsFrequency::tryEmit)
 
-            wordsFrequency.emit(frequency)
             sortType.emit(newSortType)
-            infoMessage.emit(resources.getString(newSortType.titleRes))
         }
     }
 
@@ -53,6 +62,10 @@ class WordsFrequencyViewModel(
 
     fun onListAnimationCompleted() {
         isProgress.tryEmit(false)
+
+        sortType.value.titleRes
+            .let(resources::getString)
+            .let(infoMessage::tryEmit)
     }
 
     fun getInfoMessage(): Flow<String> = infoMessage
