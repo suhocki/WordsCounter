@@ -5,6 +5,7 @@ import android.content.Context
 import com.example.wordscounter.di.Scope
 import com.example.wordscounter.di.ScopeHolder
 import com.example.wordscounter.di.module.RootModule
+import com.example.wordscounter.domain.CoroutineDispatchers
 
 object RootScope : Scope {
     private var application: Application? = null
@@ -14,7 +15,7 @@ object RootScope : Scope {
     }
 
     val scopes by lazy {
-        with(module) { Scopes(context) }
+        with(module) { Scopes(context, coroutineDispatchers) }
     }
 
     fun init(application: Application) {
@@ -23,12 +24,13 @@ object RootScope : Scope {
 
     class Scopes(
         private val context: Context,
+        private val coroutineDispatchers: CoroutineDispatchers,
     ) {
         val activity = ActivityScopeHolder()
 
         inner class ActivityScopeHolder : ScopeHolder<ActivityScope>() {
             override fun create() {
-                scope = ActivityScope(context)
+                scope = ActivityScope(context, coroutineDispatchers)
             }
         }
     }

@@ -5,9 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.wordscounter.domain.Book
 import com.example.wordscounter.domain.BooksReader
+import com.example.wordscounter.domain.CoroutineDispatchers
 import com.example.wordscounter.domain.Sort
 import com.example.wordscounter.domain.WordFrequency
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -17,6 +17,7 @@ import kotlinx.coroutines.launch
 class WordsFrequencyViewModel(
     private val booksReader: BooksReader,
     private val resources: Resources,
+    private val coroutineDispatchers: CoroutineDispatchers,
 ) : ViewModel() {
     private val sortType = MutableStateFlow(Sort.FREQUENCY)
     private val isProgress = MutableStateFlow(false)
@@ -42,7 +43,7 @@ class WordsFrequencyViewModel(
         newSortType: Sort
     ) {
         sortJob?.cancel()
-        sortJob = viewModelScope.launch(Dispatchers.Default) {
+        sortJob = viewModelScope.launch(coroutineDispatchers.default) {
             isProgress.emit(true)
 
             booksReader
@@ -56,7 +57,7 @@ class WordsFrequencyViewModel(
 
     fun getWordsFrequency(): Flow<List<WordFrequency>> = wordsFrequency
 
-    fun getSortType(): Flow<Sort?> = sortType
+    fun getSortType(): Flow<Sort> = sortType
 
     fun isProgress(): Flow<Boolean> = isProgress
 

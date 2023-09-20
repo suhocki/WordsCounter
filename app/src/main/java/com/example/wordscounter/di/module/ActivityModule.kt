@@ -8,6 +8,7 @@ import com.example.wordscounter.di.Module
 import com.example.wordscounter.di.scope.RootScope
 import com.example.wordscounter.domain.BooksReader
 import com.example.wordscounter.domain.CharsetDetector
+import com.example.wordscounter.domain.CoroutineDispatchers
 import com.example.wordscounter.domain.FilesRepository
 import com.example.wordscounter.domain.WordsFrequencyCalculator
 import com.example.wordscounter.ui.WordsFrequencyActivity
@@ -16,6 +17,7 @@ import java.nio.charset.Charset
 
 class ActivityModule(
     private val context: Context,
+    coroutineDispatchers: CoroutineDispatchers,
 ) : Module {
     private val resources: Resources
         get() = context.resources
@@ -42,6 +44,7 @@ class ActivityModule(
     private val wordsFrequencyViewModel = WordsFrequencyViewModel(
         booksReader = booksReader,
         resources = resources,
+        coroutineDispatchers = coroutineDispatchers,
     ).apply {
         addCloseable(RootScope.scopes.activity::clear)
     }

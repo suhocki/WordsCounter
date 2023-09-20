@@ -53,7 +53,7 @@ class WordsFrequencyActivity(
 
         viewModel.getSortType().observeFlow(this) { sortType ->
             menu.forEach { menuItem ->
-                menuItem.isVisible = menuItem.itemId == sortType?.menuId
+                menuItem.isVisible = menuItem.itemId == sortType.menuId
             }
         }
 
