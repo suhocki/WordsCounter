@@ -1,6 +1,6 @@
 package com.example.wordscounter.domain.model
 
-class WordFrequency(
+data class WordFrequency(
     val word: String,
     val count: Int,
 )

@@ -6,11 +6,13 @@ class WordsFrequencyCalculator {
     private val wordFrequencyMap = HashMap<String, Int>()
 
     fun addWords(words: List<String>) {
-        words.forEach { word ->
-            val lowercaseWord = word.lowercase()
-            val count = wordFrequencyMap.getOrDefault(lowercaseWord, 0)
-            wordFrequencyMap[lowercaseWord] = count + 1
-        }
+        words
+            .map { word -> word.lowercase() }
+            .forEach { word ->
+                wordFrequencyMap[word] = wordFrequencyMap
+                    .getOrDefault(word, 0)
+                    .inc()
+            }
     }
 
     fun getWordsFrequency() = wordFrequencyMap
