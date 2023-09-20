@@ -55,12 +55,6 @@ class WordsFrequencyViewModel(
         }
     }
 
-    fun getWordsFrequency(): Flow<List<WordFrequency>> = wordsFrequency
-
-    fun getSortType(): Flow<Sort> = sortType
-
-    fun isProgress(): Flow<Boolean> = isProgress
-
     fun onListAnimationCompleted() {
         isProgress.tryEmit(false)
 
@@ -68,6 +62,12 @@ class WordsFrequencyViewModel(
             .let(resources::getString)
             .let(infoMessage::tryEmit)
     }
+
+    fun getWordsFrequency(): Flow<List<WordFrequency>> = wordsFrequency
+
+    fun getSortType(): Flow<Sort> = sortType
+
+    fun isProgress(): Flow<Boolean> = isProgress
 
     fun getInfoMessage(): Flow<String> = infoMessage
 }
