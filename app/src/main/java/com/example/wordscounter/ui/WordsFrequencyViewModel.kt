@@ -2,18 +2,20 @@ package com.example.wordscounter.ui
 
 import android.content.res.Resources
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.wordscounter.domain.BooksReader
 import com.example.wordscounter.domain.CoroutineDispatchers
 import com.example.wordscounter.domain.model.Book
 import com.example.wordscounter.domain.model.Sort
 import com.example.wordscounter.domain.model.WordFrequency
 import com.example.wordscounter.ui.extension.titleRes
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import androidx.lifecycle.viewModelScope as baseViewModelScope
 
 class WordsFrequencyViewModel(
     private val booksReader: BooksReader,
@@ -24,6 +26,12 @@ class WordsFrequencyViewModel(
     private val isProgress = MutableStateFlow(false)
     private val infoMessage = MutableSharedFlow<String>(1)
     private val wordsFrequency = MutableSharedFlow<List<WordFrequency>>(1, 1)
+
+    private val viewModelScope = CoroutineScope(
+        baseViewModelScope.coroutineContext + CoroutineExceptionHandler { _, throwable ->
+            infoMessage.tryEmit(throwable.localizedMessage.orEmpty())
+        }
+    )
 
     private var sortJob: Job? = null
 
