@@ -28,7 +28,7 @@ class WordsFrequencyViewModelTest {
 
     private val words = (0..10)
         .map { i -> 'a' + i }
-        .flatMap { char -> listOf("$char", "$char$char") }
+        .flatMap { char -> listOf("$char", "$char$char", "$char${char + 1}") }
         .mapIndexed { index, word -> WordFrequency(word, index) }
         .shuffled()
 
@@ -58,6 +58,20 @@ class WordsFrequencyViewModelTest {
         assertEquals(
             viewModel.getWordsFrequency().firstOrNull(),
             words.sortedBy { it.word },
+        )
+    }
+
+    @Test
+    fun `sort by char length`() = runTest {
+        viewModel.sortBy(Sort.CHAR_LENGTH)
+
+        assertEquals(
+            words
+                .sortedWith { o1, o2 -> o1.word.length.compareTo(o2.word.length) }
+                .groupBy { it.word.length }
+                .toSortedMap { o1, o2 -> o2.compareTo(o1) }
+                .flatMap { (_, value) -> value.sortedBy(WordFrequency::word) },
+            viewModel.getWordsFrequency().firstOrNull(),
         )
     }
 
