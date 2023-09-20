@@ -49,7 +49,7 @@ class WordsFrequencyActivityTest {
     }
 
     @Test
-    fun `check if words are bounded`() = launchActivity {
+    fun `words are bounded`() = launchActivity {
         words.forEach { word ->
             val checkItem = actionOnItem<WordsFrequencyAdapter.ViewHolder>(
                 allOf(
@@ -64,7 +64,7 @@ class WordsFrequencyActivityTest {
     }
 
     @Test
-    fun `check if progress is shown`() {
+    fun `progress is shown`() {
         every { viewModel.isProgress() } returns MutableStateFlow(true)
 
         launchActivity {
@@ -73,18 +73,18 @@ class WordsFrequencyActivityTest {
     }
 
     @Test
-    fun `check if sort button is shown`() {
-        every { viewModel.getSortType() } returns MutableStateFlow(Sort.ALPHABETICALLY)
+    fun `sort button is shown`() {
+        every { viewModel.getSortType() } returns MutableStateFlow(Sort.CHAR_LENGTH)
 
         launchActivity {
-            onView(withId(R.id.sort_alphabetically)).check(matches(isDisplayed()))
+            onView(withId(R.id.sort_by_char_length)).check(matches(isDisplayed()))
             onView(withId(R.id.sort_by_frequency)).check(doesNotExist())
-            onView(withId(R.id.sort_by_char_length)).check(doesNotExist())
+            onView(withId(R.id.sort_alphabetically)).check(doesNotExist())
         }
     }
 
     @Test
-    fun `check viewModel is invoked on sort click`() {
+    fun `viewModel is notified on sort click`() {
         every { viewModel.getSortType() } returns MutableStateFlow(Sort.CHAR_LENGTH)
 
         launchActivity {
@@ -95,9 +95,18 @@ class WordsFrequencyActivityTest {
     }
 
     @Test
-    fun `check viewModel is invoked on list animation completed`() {
+    fun `viewModel is notified on list animation completed`() {
         launchActivity {
             verify { viewModel.onListAnimationCompleted() }
+        }
+    }
+
+    @Test
+    fun `viewModelStore is initialised`() {
+        launchActivity {
+            activity.viewModelStore.keys()
+                .map(activity.viewModelStore::get)
+                .contains(viewModel)
         }
     }
 

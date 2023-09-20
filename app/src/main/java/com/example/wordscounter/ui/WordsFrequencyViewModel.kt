@@ -1,11 +1,12 @@
 package com.example.wordscounter.ui
 
 import android.content.res.Resources
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.wordscounter.domain.Book
 import com.example.wordscounter.domain.BooksReader
 import com.example.wordscounter.domain.Sort
 import com.example.wordscounter.domain.WordFrequency
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -15,31 +16,27 @@ import kotlinx.coroutines.launch
 class WordsFrequencyViewModel(
     private val booksReader: BooksReader,
     private val resources: Resources,
-) {
-    private val coroutineScope = CoroutineScope(Dispatchers.Main)
-
-    private val book = Book.ROMEO_AND_JULIET
-    private val wordsFrequency = MutableSharedFlow<List<WordFrequency>>(1, 1)
-
-    private val sortType = MutableStateFlow<Sort?>(null)
+) : ViewModel() {
     private val sortTypeQueue = ArrayDeque(Sort.values().toList())
 
+    private val sortType = MutableStateFlow<Sort?>(null)
     private val isProgress = MutableStateFlow(false)
     private val infoMessage = MutableSharedFlow<String>()
+    private val wordsFrequency = MutableSharedFlow<List<WordFrequency>>(1, 1)
 
     init {
         changeSort()
     }
 
     fun changeSort() {
-        coroutineScope.launch(Dispatchers.Default) {
+        viewModelScope.launch(Dispatchers.Default) {
             isProgress.emit(true)
             sortType.emit(null)
 
             with(sortTypeQueue) { addLast(removeFirst()) }
 
             val newSortType = sortTypeQueue.first()
-            val frequency = booksReader.getWordsFrequency(book)
+            val frequency = booksReader.getWordsFrequency(Book.ROMEO_AND_JULIET)
                 .sortedWith(newSortType.comparator)
 
             wordsFrequency.emit(frequency)

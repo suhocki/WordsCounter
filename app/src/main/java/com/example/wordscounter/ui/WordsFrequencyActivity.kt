@@ -17,6 +17,9 @@ class WordsFrequencyActivity(
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        viewModelStore.put("$viewModel", viewModel)
+
         val viewBinding = ActivityWordsFrequencyBinding.inflate(layoutInflater)
         val wordsFrequencyAdapter = WordsFrequencyAdapter()
         var toast: Toast? = null

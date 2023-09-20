@@ -5,6 +5,7 @@ import android.content.res.AssetManager
 import android.content.res.Resources
 import com.example.wordscounter.data.AssetsRepository
 import com.example.wordscounter.di.Module
+import com.example.wordscounter.di.scope.RootScope
 import com.example.wordscounter.domain.BooksReader
 import com.example.wordscounter.domain.CharsetDetector
 import com.example.wordscounter.domain.FilesRepository
@@ -41,7 +42,9 @@ class ActivityModule(
     private val wordsFrequencyViewModel = WordsFrequencyViewModel(
         booksReader = booksReader,
         resources = resources,
-    )
+    ).apply {
+        addCloseable(RootScope.scopes.activity::clear)
+    }
 
     val wordsFrequencyActivity: WordsFrequencyActivity
         get() = WordsFrequencyActivity(wordsFrequencyViewModel)

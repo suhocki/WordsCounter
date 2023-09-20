@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WordsCounter"
         tools:replace="android:appComponentFactory"
-        tools:targetApi="34">
+        tools:targetApi="33">
         <activity
             android:name=".ui.WordsFrequencyActivity"
             android:exported="true">
