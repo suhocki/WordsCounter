@@ -1,12 +1,12 @@
 package com.example.wordscounter.domain
 
-import java.io.File
-import java.nio.charset.Charset
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
+import java.io.File
+import java.nio.charset.Charset
 
 @RunWith(Parameterized::class)
 class CharsetDetectorTest(
@@ -14,30 +14,27 @@ class CharsetDetectorTest(
     private val charset: Charset,
 ) {
     private val detector = CharsetDetector(
-        mapOf(
-            "utf-8" to Charsets.UTF_8,
-            "utf-16" to Charsets.UTF_16,
-            "utf-32" to Charsets.UTF_32,
-        )
+        Charset.availableCharsets(),
+        linesCount = 1000,
     )
 
     @Test
     fun `detect charset`() = runTest {
-        val file = File(javaClass.classLoader.getResource(fileName).file)
+        val file = File(requireNotNull(javaClass.classLoader).getResource(fileName).file)
 
-        assertEquals(
-            charset,
-            detector.detectFileCharset(file, "^[0-9A-z\\s]+\$".toRegex())
-        )
+        val detectFileCharset =
+            detector.detectFileCharset(file, "^[0-9A-z[:punct:]’\\s]+\$".toRegex())
+
+        assertEquals(charset, detectFileCharset)
     }
 
     companion object {
         @JvmStatic
         @Parameterized.Parameters
         fun data() = listOf(
-            preconditions(fileName = "utf-8.txt", charset = Charsets.UTF_8),
             preconditions(fileName = "utf-16.txt", charset = Charsets.UTF_16),
             preconditions(fileName = "utf-32.txt", charset = Charsets.UTF_32),
+            preconditions(fileName = "Romeo-and-Juliet.txt", charset = Charset.forName("x-MacCentralEurope")),
         )
 
         private fun preconditions(
