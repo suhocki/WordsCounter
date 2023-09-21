@@ -1,17 +1,29 @@
-# Teladoc Health Senior Mobile Engineer Interview Assessment 
+# Teladoc Health Interview Assessment 
 
 The project is created by Maksim Sukhotski as part of the `Teladoc Health Senior Mobile Engineer Interview Assessment`.
 
-Algorithms and Data Structures
-
 # Task
 
-Included with this assignment is the file Romeo-and-Juliet.txt. It is a classic tale of family, death and forbidden love! Write an application that will read this file and generate a list of all word occurrences. Label each word with the frequency with which it is used. The application should display the results in a TableView / RecyclerView ordered from most to least frequently used.
+Algorithms and Data Structures
+
+Included with this assignment is the file Romeo-and-Juliet.txt. 
+It is a classic tale of family, death and forbidden love! 
+
+Write an application that will read this file and generate a list of all word occurrences.
+Label each word with the frequency with which it is used. 
+The application should display the results in a TableView / RecyclerView ordered from most to least frequently used.
+
 Extra credit: Build a control that allows the table view to sort itself instead alphabetically or by character length of the word.
+
+# Implementation
+
+- [x] Extract words frequency from Romeo-and-Juliet.txt
+- [x] Populate `RecyclerView` with words and their frequency
+- [x] Control for changing sort type: by frequency, by length and alphabetically
 
 # Demo
 
-![demo](./demo.gif)
+<img src="./demo.gif"  alt="drawing" width="500"/>
 
 # Unit tests
 
