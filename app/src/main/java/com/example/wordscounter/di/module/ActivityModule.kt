@@ -1,7 +1,6 @@
 package com.example.wordscounter.di.module
 
 import android.content.Context
-import android.content.res.AssetManager
 import android.content.res.Resources
 import com.example.wordscounter.data.AssetsRepository
 import com.example.wordscounter.di.Module
@@ -22,11 +21,8 @@ class ActivityModule(
     private val resources: Resources
         get() = context.resources
 
-    private val assetManager: AssetManager
-        get() = resources.assets
-
     private val filesRepository: FilesRepository
-        get() = AssetsRepository(assetManager, context)
+        get() = AssetsRepository(resources.assets, context.cacheDir)
 
     private val charsetDetector: CharsetDetector
         get() = CharsetDetector(Charset.availableCharsets())
