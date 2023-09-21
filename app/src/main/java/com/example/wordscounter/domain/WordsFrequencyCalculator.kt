@@ -15,6 +15,8 @@ class WordsFrequencyCalculator {
             }
     }
 
-    fun getWordsFrequency() = wordFrequencyMap
-        .map { (word, frequency) -> WordFrequency(word, frequency) }
+    fun getWordsFrequency(): List<WordFrequency> =
+        wordFrequencyMap.map { (word, frequency) ->
+            WordFrequency(word, frequency)
+        }
 }

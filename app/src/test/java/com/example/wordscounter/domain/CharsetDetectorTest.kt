@@ -10,7 +10,7 @@ import java.nio.charset.Charset
 
 @RunWith(Parameterized::class)
 class CharsetDetectorTest(
-    private val fileName: String,
+    fileName: String,
     private val charset: Charset,
 ) {
     private val detector = CharsetDetector(
@@ -18,14 +18,14 @@ class CharsetDetectorTest(
         linesCount = 1000,
     )
 
+    private val file = File(requireNotNull(javaClass.classLoader).getResource(fileName).file)
+
     @Test
     fun `detect charset`() = runTest {
-        val file = File(requireNotNull(javaClass.classLoader).getResource(fileName).file)
-
-        val detectFileCharset =
-            detector.detectFileCharset(file, "^[0-9A-z[:punct:]’\\s]+\$".toRegex())
-
-        assertEquals(charset, detectFileCharset)
+        assertEquals(
+            charset,
+            detector.detectFileCharset(file, "^[0-9A-z[:punct:]’\\s]+\$".toRegex()),
+        )
     }
 
     companion object {
@@ -34,7 +34,10 @@ class CharsetDetectorTest(
         fun data() = listOf(
             preconditions(fileName = "utf-16.txt", charset = Charsets.UTF_16),
             preconditions(fileName = "utf-32.txt", charset = Charsets.UTF_32),
-            preconditions(fileName = "Romeo-and-Juliet.txt", charset = Charset.forName("x-MacCentralEurope")),
+            preconditions(
+                fileName = "Romeo-and-Juliet.txt",
+                charset = Charset.forName("x-MacCentralEurope"),
+            ),
         )
 
         private fun preconditions(

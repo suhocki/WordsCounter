@@ -1,4 +1,4 @@
-package com.example.wordscounter
+package com.example.wordscounter.ui
 
 import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.ActivityScenario
@@ -8,11 +8,9 @@ import androidx.test.espresso.assertion.ViewAssertions.*
 import androidx.test.espresso.contrib.RecyclerViewActions.*
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.example.wordscounter.R
 import com.example.wordscounter.domain.model.Sort
 import com.example.wordscounter.domain.model.WordFrequency
-import com.example.wordscounter.ui.WordsFrequencyActivity
-import com.example.wordscounter.ui.WordsFrequencyAdapter
-import com.example.wordscounter.ui.WordsFrequencyViewModel
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
