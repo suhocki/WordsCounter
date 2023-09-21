@@ -16,7 +16,7 @@ import java.nio.charset.Charset
 
 class ActivityModule(
     private val context: Context,
-    coroutineDispatchers: CoroutineDispatchers,
+    private val coroutineDispatchers: CoroutineDispatchers,
 ) : Module {
     private val resources: Resources
         get() = context.resources
@@ -35,6 +35,7 @@ class ActivityModule(
             filesRepository = filesRepository,
             charsetDetector = charsetDetector,
             wordsFrequencyCalculator = wordsFrequencyCalculator,
+            coroutineDispatchers = coroutineDispatchers,
         )
 
     private val wordsFrequencyViewModel = WordsFrequencyViewModel(

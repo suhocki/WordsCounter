@@ -1,18 +1,27 @@
 package com.example.wordscounter.domain
 
+import com.example.wordscounter.TestCoroutineRule
 import com.example.wordscounter.domain.model.Book
 import com.example.wordscounter.domain.model.WordFrequency
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import java.io.File
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
-import java.io.File
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class BooksReaderTest {
+
+    @Rule
+    @JvmField
+    val coroutineRule = TestCoroutineRule()
+
     private val repository: FilesRepository = mockk()
     private val charsetDetector: CharsetDetector = mockk()
     private val calculator: WordsFrequencyCalculator = mockk(relaxed = true)
@@ -27,6 +36,7 @@ class BooksReaderTest {
         charsetDetector = charsetDetector,
         wordsFrequencyCalculator = calculator,
         wordsFrequencyCache = cache,
+        coroutineDispatchers = coroutineRule.coroutineDispatchers,
         knownChars = "^[a-z\\s]+\$".toRegex()
     )
 
