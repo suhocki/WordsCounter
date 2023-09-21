@@ -43,7 +43,8 @@ class WordsFrequencyViewModelTest {
 
     @Before
     fun setUp() {
-        coEvery { booksReader.getWordsFrequency(Book.ROMEO_AND_JULIET) }.returns(words)
+        coEvery { booksReader.getWordsFrequency(Book.ROMEO_AND_JULIET) } coAnswers { words }
+
         every { resources.getString(R.string.sorted_by_frequency) }.returns(message)
     }
 
@@ -127,6 +128,13 @@ class WordsFrequencyViewModelTest {
         viewModel.onListAnimationCompleted()
 
         assertEquals(message, viewModel.getInfoMessage().firstOrNull())
+    }
+
+    @Test
+    fun `message shown on error catch`() = runTest {
+        coEvery { booksReader.getWordsFrequency(Book.ROMEO_AND_JULIET) }.coAnswers { error("error") }
+
+        assertEquals("error", viewModel.getInfoMessage().firstOrNull())
     }
 
     private suspend fun WordsFrequencyViewModel.sortBy(
